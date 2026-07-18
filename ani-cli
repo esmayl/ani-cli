@@ -496,6 +496,9 @@ play() {
             printf "\33[2K\r\033[1;34mPlaying episode %s...\033[0m\n" "$ep_no"
             [ "$i" = "$end" ] && unset range
             play_episode
+            # detached players (nohup ... &) return immediately; wait so the next
+            # "Playing episode" line doesn't race ahead of what's on screen
+            [ -n "$range" ] && wait
         done
     else
         play_episode
